@@ -1,0 +1,195 @@
+using Procesiranje_posiljaka_skladiste.DAL;
+using Procesiranje_posiljaka_skladiste.Global;
+using Procesiranje_posiljaka_skladiste.Models;
+using Procesiranje_posiljaka_skladiste.Utilities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Entity;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace Procesiranje_posiljaka_skladiste.Moduli
+{
+    /// <summary>
+    /// Interaction logic for Vaganje_win.xaml
+    /// </summary>
+    public partial class Vaganje_win : Window
+    {
+        Podaci_posiljke d = new Podaci_posiljke();
+        Podaci_posiljke d_pom = new Podaci_posiljke();
+        private LowLevelKeyboardListener _listener;
+        private Barcode_helper _barcode_helper;
+        Stopwatch sw = new Stopwatch();
+        StringBuilder mScanData = new StringBuilder();
+        
+        bool scaning = false;
+        bool scaned = false;
+        bool window_focused = false;
+        public Vaganje_win()
+        {
+            bindanje();
+            InitializeComponent();
+            this.PreviewKeyUp += new KeyEventHandler(Window_PreviewKeyUp);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _barcode_helper = new Barcode_helper();
+            _listener = new LowLevelKeyboardListener();
+            _listener.OnKeyPressed += _listener_OnKeyPressed;
+
+            _listener.HookKeyboard();
+        }
+
+        void Window_PreviewKeyUp(object sender, KeyEventArgs e)  // detekcija keydown-a kada je prozor selektiran, "lokalna" detekcija, sporija od globalne (dakle globalna detekcija detektira key down-e prije nego se uopæe slova fizièki upišu)
+        {
+
+            if (scaning)
+                window_focused = true;
+
+            if (scaned == true && e.Key == Key.Enter && mScanData.Length > 4)
+            {
+                Console.WriteLine("bb");
+                upisi();  //upisuje kada je prozor selektiran 
+            }
+
+        }
+
+        private void upisi()
+        {
+            scaning = false;
+            scaned = false;
+            window_focused = false;
+
+            _barcode_helper.odpamti(d,d_pom);
+            d.arrival_depot = mScanData.ToString();
+            mScanData.Clear();
+            vaga_win.Activate();
+        }
+
+        void _listener_OnKeyPressed(object sender, KeyPressedArgs e)  // detekcija svih keydown-a, "globalna" detekcija
+        {
+
+         
+            if (!sw.IsRunning || sw.ElapsedMilliseconds > 1000)
+            {
+                mScanData.Clear();
+                _barcode_helper.pamti(d,d_pom);
+                sw.Reset();
+                sw.Start();
+                mScanData.Append(_barcode_helper.add_char(e));
+
+            }
+            else
+            {
+                double s = sw.Elapsed.TotalMilliseconds;
+
+                if (s < 500)
+                {
+                    Console.WriteLine("dd  " + s);
+                    Console.WriteLine("cc  "+ mScanData);
+                    Console.WriteLine("cc  " + e.KeyPressed);
+                    scaning = true;
+                    if (e.KeyPressed == Key.Enter)  // kraj
+                    {
+                        if (!window_focused && mScanData.Length > 4)
+                        {
+                            Console.WriteLine("aa");
+                            upisi();  // upisuje samo kada window nije fokusiran
+                        }
+                        sw.Stop();
+                        sw.Reset();
+                        scaned = true;
+                    }
+                    else
+                    {
+                        mScanData.Append(_barcode_helper.add_char(e));
+                    }
+                }
+                else
+                {
+                    scaning = false;
+                    sw.Stop();
+                    sw.Reset();
+                    mScanData.Clear();
+                }
+            }
+
+           
+
+        }
+
+
+       
+
+       
+
+
+        private void bindanje()
+        {
+
+            d.PropertyChanged += Computer_PropertyChanged;
+            this.DataContext = d;
+        }
+
+        void Computer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+
+
+        }
+
+
+        private void Skeniraj_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            Random rand = new Random();
+
+            d.reception_number = rand.Next(1, 1000000);
+        }
+
+        private void Vazi_Click(object sender, RoutedEventArgs e)
+        {
+            Random rand = new Random();
+            d.weight = rand.Next(1, 10000);
+
+            d.arrival_depot = Funkcije.datum();
+        }
+
+
+
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            d.PropertyChanged -= Computer_PropertyChanged;
+            _listener.UnHookKeyboard();
+        }
+
+
+
+
+        private void Spremi_Click(object sender, RoutedEventArgs e)
+        {
+            int povrat = CRUD.spremi(d);
+            if (povrat == 0)
+                MessageBox.Show("Vec postoji!");
+            else if (povrat == -1)
+                MessageBox.Show("Nešto ne valja!");
+            else if (povrat == 1)
+                MessageBox.Show("Uspješno spremljeno!");
+        }
+
+
+    }
+}

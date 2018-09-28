@@ -44,14 +44,22 @@ namespace Procesiranje_posiljaka_skladiste
             InitializeComponent();
             d.zip_popis = ZP.zip_popis;
             d.Damage_popis = ZP.damage_popis;
-            update();
+            //update();
+            Task.Run(UpdateApp);
         }
 
         public async void update() // assume we return an int from this long running operation 
         {
-            using (var mgr = UpdateManager.GitHubUpdateManager("https://github.com/quickben22/Procesiranje_posiljaka_skladiste"))
+            using (var mgr = UpdateManager.GitHubUpdateManager("https://github.com/quickben22/Procesiranje_update", "Procesiranje_posiljaka_skladiste",null,null,true))
             {
-                await mgr.Result.UpdateApp();
+                try
+                {
+                    await mgr.Result.UpdateApp();
+                }
+                catch (Exception e)
+                {
+
+                }
             }
 
             //using (var mgr = new UpdateManager(@"D:\VS2017\Procesiranje_posiljaka_skladiste_git\Releases"))
@@ -59,6 +67,48 @@ namespace Procesiranje_posiljaka_skladiste
             //    await mgr.UpdateApp();
             //}
         }
+
+        public  async Task UpdateApp()
+        {
+            try
+            {
+                using (var mgr = await UpdateManager.GitHubUpdateManager("https://github.com/quickben22/Procesiranje_update"))
+                {
+                    var updates = await mgr.CheckForUpdate();
+                    var lastVersion = updates?.ReleasesToApply?.OrderBy(x => x.Version).LastOrDefault();
+                    if (lastVersion == null)
+                    {
+                        MessageBox.Show("No Updates are available at this time.");
+                        return;
+                    }
+
+                    if (MessageBox.Show($"An update to version {lastVersion.Version} is available. Do you want to update?",
+                            "Update available", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+                    {
+                        return;
+                    }
+
+#if DEBUG
+                    MessageBox.Show("DEBUG: Don't actually perform the update in debug mode");
+                }
+#else
+            await mgr.DownloadReleases(new[] {lastVersion});
+            await mgr.ApplyReleases(updates);
+            await mgr.UpdateApp();
+
+            MessageBox.Show("The application has been updated - please close and restart.");
+        }
+
+        UpdateManager.RestartApp();
+#endif
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Update check failed with an exception: " + e.Message);
+            }
+        }
+
+
 
 
         private void Ulaz_Click(object sender, RoutedEventArgs e)
@@ -72,7 +122,7 @@ namespace Procesiranje_posiljaka_skladiste
         private void Vaganje_Click(object sender, RoutedEventArgs e)
         {
             vaga_click_fun(sender, gridic, Grid_button);
-           
+
         }
 
         private VaganjeOsnovno vaga_click_fun(object o, Grid gridic, Grid Grid_button)
@@ -82,11 +132,11 @@ namespace Procesiranje_posiljaka_skladiste
             gridic.Children.Add(x);
             //x.HorizontalAlignment = HorizontalAlignment.Center;
             return x;
-           
+
         }
 
 
-        private void zamjena_user_controla(object o,Grid gridic,Grid Grid_button)
+        private void zamjena_user_controla(object o, Grid gridic, Grid Grid_button)
         {
 
             if (((Button)o).Background == Brushes.Green) return; // već je uključen
@@ -121,10 +171,10 @@ namespace Procesiranje_posiljaka_skladiste
                 else if (t == "Procesiranje_posiljaka_skladiste.Moduli.VaganjeOsnovno")
                     ((VaganjeOsnovno)v).gasenje();
             }
-            
+
 
             gridic.Children.Clear();
-           
+
 
         }
 
@@ -255,7 +305,7 @@ namespace Procesiranje_posiljaka_skladiste
             if (d.Barcode != null)
             {
                 //button_enable();
-              VaganjeOsnovno x=  vaga_click_fun(Vaga_button,  gridic,  Grid_button);
+                VaganjeOsnovno x = vaga_click_fun(Vaga_button, gridic, Grid_button);
                 x.sken();
             }
             ZP.IsChanged = false;
@@ -263,7 +313,7 @@ namespace Procesiranje_posiljaka_skladiste
 
         private void SpremiMenu_Click(object sender, RoutedEventArgs e)
         {
-            
+
             CRUD.save_web_db(d);
             CRUD.spremi(d);
         }

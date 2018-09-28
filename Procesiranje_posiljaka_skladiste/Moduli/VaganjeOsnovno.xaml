@@ -33,7 +33,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="170,47,0,0" TextWrapping="Wrap" FontSize="24" Text="VAGANJE3" VerticalAlignment="Top" RenderTransformOrigin="0.061,-0.406"/>
+        <TextBlock HorizontalAlignment="Left" Margin="170,47,0,0" TextWrapping="Wrap" FontSize="24" Text="VAGANJE4" VerticalAlignment="Top" RenderTransformOrigin="0.061,-0.406"/>
 
         <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="55,125,0,0" TextWrapping="Wrap" Text="Prijamni broj:" VerticalAlignment="Top" Width="104"/>
         <TextBox  Text="{Binding Barcode, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="176,125,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>

@@ -23,6 +23,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using Squirrel;
 
 namespace Procesiranje_posiljaka_skladiste
 {
@@ -43,8 +44,17 @@ namespace Procesiranje_posiljaka_skladiste
             InitializeComponent();
             d.zip_popis = ZP.zip_popis;
             d.Damage_popis = ZP.damage_popis;
-
+            update();
         }
+
+        public async void update() // assume we return an int from this long running operation 
+        {
+            using (var mgr = new UpdateManager(@"D:\VS2017\Procesiranje_posiljaka_skladiste_git\Releases"))
+            {
+                await mgr.UpdateApp();
+            }
+        }
+
 
         private void Ulaz_Click(object sender, RoutedEventArgs e)
         {
@@ -65,7 +75,7 @@ namespace Procesiranje_posiljaka_skladiste
             zamjena_user_controla(o, gridic, Grid_button);
             VaganjeOsnovno x = new VaganjeOsnovno(d);
             gridic.Children.Add(x);
-            x.HorizontalAlignment = HorizontalAlignment.Center;
+            //x.HorizontalAlignment = HorizontalAlignment.Center;
             return x;
            
         }
@@ -116,8 +126,8 @@ namespace Procesiranje_posiljaka_skladiste
         private void Print_Click(object sender, RoutedEventArgs e)
         {
 
-            Printing.Print print_class = new Printing.Print();
-            print_class.start();
+            //Printing.Print print_class = new Printing.Print();
+            //print_class.start();
 
 
 

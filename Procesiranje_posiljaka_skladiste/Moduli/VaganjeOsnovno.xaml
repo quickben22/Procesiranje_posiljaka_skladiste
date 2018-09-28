@@ -33,23 +33,23 @@
     </UserControl.Resources>
 
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="290,107,0,0" TextWrapping="Wrap" FontSize="24" Text="VAGANJE" VerticalAlignment="Top" RenderTransformOrigin="0.061,-0.406"/>
+        <TextBlock HorizontalAlignment="Left" Margin="170,47,0,0" TextWrapping="Wrap" FontSize="24" Text="VAGANJE3" VerticalAlignment="Top" RenderTransformOrigin="0.061,-0.406"/>
 
-        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="175,185,0,0" TextWrapping="Wrap" Text="Prijamni broj:" VerticalAlignment="Top" Width="104"/>
-        <TextBox  Text="{Binding Barcode, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="296,185,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
-        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="192,231,0,0" TextWrapping="Wrap" Text="Masa [g]:" VerticalAlignment="Top" Width="87"/>
-        <TextBox Text="{Binding RealWeightNet, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="296,231,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
-        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="192,281,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="87">
+        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="55,125,0,0" TextWrapping="Wrap" Text="Prijamni broj:" VerticalAlignment="Top" Width="104"/>
+        <TextBox  Text="{Binding Barcode, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="176,125,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="72,171,0,0" TextWrapping="Wrap" Text="Masa [g]:" VerticalAlignment="Top" Width="87"/>
+        <TextBox Text="{Binding RealWeightNet, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="176,171,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="72,221,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="87">
        Volumen [cm<Run FontSize="8" BaselineAlignment="Superscript">3</Run>]
         </TextBlock>
-        <TextBox Text="{Binding Length, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="296,281,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
-        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="334,284,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="15"/>
+        <TextBox Text="{Binding Length, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="176,221,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="214,224,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="15"/>
 
-        <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="356,281,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
-        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="394,284,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="15"/>
+        <TextBox Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="236,221,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+        <TextBlock HorizontalAlignment="Left" TextAlignment="Right" Margin="274,224,0,0" TextWrapping="Wrap" Text="X" VerticalAlignment="Top" Width="15"/>
 
-        <TextBox Text="{Binding Heigth, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="416,281,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
-        <TextBlock Visibility="Visible" Name="Obavijest_tb" HorizontalAlignment="Left" Margin="192,387,0,0" TextWrapping="Wrap" Foreground="LightSeaGreen" Text="Paket evidentiran!" FontSize="34" VerticalAlignment="Top"/>
+        <TextBox Text="{Binding Heigth, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="296,221,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="33"/>
+        <TextBlock Visibility="Visible" Name="Obavijest_tb" HorizontalAlignment="Left" Margin="72,327,0,0" TextWrapping="Wrap" Foreground="LightSeaGreen" Text="Paket evidentiran!" FontSize="34" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

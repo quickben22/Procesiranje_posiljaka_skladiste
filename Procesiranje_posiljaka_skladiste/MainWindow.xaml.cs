@@ -49,10 +49,15 @@ namespace Procesiranje_posiljaka_skladiste
 
         public async void update() // assume we return an int from this long running operation 
         {
-            using (var mgr = new UpdateManager(@"D:\VS2017\Procesiranje_posiljaka_skladiste_git\Releases"))
+            using (var mgr = UpdateManager.GitHubUpdateManager("https://github.com/quickben22/Procesiranje_posiljaka_skladiste"))
             {
-                await mgr.UpdateApp();
+                await mgr.Result.UpdateApp();
             }
+
+            //using (var mgr = new UpdateManager(@"D:\VS2017\Procesiranje_posiljaka_skladiste_git\Releases"))
+            //{
+            //    await mgr.UpdateApp();
+            //}
         }
 
 
